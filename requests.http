@@ -1,0 +1,93 @@
+### Registro
+
+POST http://localhost:3000/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "admin@blog.com",
+    "password": "123456",
+    "name": "Admin"
+}
+
+### Login
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@blog.com",
+  "password": "123456"
+}
+
+### Crear categoría sin token
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+  "name": "Tecnología",
+  "description": "Posts sobre tecnología"
+}
+
+### Crear categoría con token (rol user)
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTZiYjZlYi1mMTgzLTRiMGUtYTYxZC00NjYwYjc2NWUzN2UiLCJlbWFpbCI6ImFkbWluQGJsb2cuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODI4OTI3NjMsImV4cCI6MTc4Mjg5NjM2M30.b7R-I1oFgpl_-XbjwmiK03OrHVZ0PSQn-Oqg6ne22JU
+
+{
+  "name": "Tecnología",
+  "description": "Posts sobre tecnología"
+}
+
+### Registro admin
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "superadmin@blog.com",
+  "password": "123456",
+  "name": "Super Admin",
+  "role": "admin"
+}
+
+### Login admin
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@blog.com",
+  "password": "123456"
+}
+
+### Crear categoría con token admin
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTZiYjZlYi1mMTgzLTRiMGUtYTYxZC00NjYwYjc2NWUzN2UiLCJlbWFpbCI6ImFkbWluQGJsb2cuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgyODkzMjM4LCJleHAiOjE3ODI4OTY4Mzh9.b7FSZs8aey-94MthimhuSRMdQXkSRRT-v0z_iw-uWjY
+
+{
+  "name": "Tecnología",
+  "description": "Posts sobre tecnología"
+}
+
+### Crear post
+
+POST http://localhost:3000/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTZiYjZlYi1mMTgzLTRiMGUtYTYxZC00NjYwYjc2NWUzN2UiLCJlbWFpbCI6ImFkbWluQGJsb2cuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgyODkzMjM4LCJleHAiOjE3ODI4OTY4Mzh9.b7FSZs8aey-94MthimhuSRMdQXkSRRT-v0z_iw-uWjY
+
+{
+  "title": "Mi primer post",
+  "content": "Este es el contenido del post",
+  "categoryId": "fa707516-f264-494e-97a5-ecca95d4048b"
+}
+
+### Listar posts (público)
+
+GET http://localhost:3000/posts
+
+### Listar categorías (público)
+
+GET http://localhost:3000/categories
