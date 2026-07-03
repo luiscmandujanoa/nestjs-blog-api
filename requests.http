@@ -130,3 +130,16 @@ GET http://localhost:3000/posts?status=published
 ### Debería devolver vacío
 
 GET http://localhost:3000/posts?search=angular
+
+### Subir imagen a un post
+
+POST http://localhost:3000/posts/352132b2-4ec9-4214-a35d-b66a8229812d/image
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTZiYjZlYi1mMTgzLTRiMGUtYTYxZC00NjYwYjc2NWUzN2UiLCJlbWFpbCI6ImFkbWluQGJsb2cuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgzMDcwOTY3LCJleHAiOjE3ODMwNzQ1Njd9.Y5G8YCG2UB9wuQmGou0CABymt-gvkgvIr4MUcxAYld4
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="image"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./test.jpg
+--boundary--

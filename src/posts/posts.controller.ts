@@ -22,7 +22,10 @@ import { QueryPostDto } from './dto/query-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from 'src/images/images.service';
 import { memoryStorage } from 'multer';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('posts')
+@ApiBearerAuth()
 @Controller('posts')
 export class PostsController {
     constructor(
