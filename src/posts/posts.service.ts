@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { QueryPostDto } from './dto/query-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -27,10 +28,39 @@ export class PostsService {
         return this.postsRepository.save(post);
     }
 
-    async findAll(): Promise<Post[]> {
-        return this.postsRepository.find({
+    async findAll(
+        dto: QueryPostDto,
+    ): Promise<{ data: Post[]; total: number; page: number; limit: number }> {
+        const { page, limit, status, search, categoryId } = dto;
+        const currentPage = parseInt(page ?? '1');
+        const currentLimit = parseInt(limit ?? '10');
+        const skip = (currentPage - 1) * currentLimit;
+        const take = currentLimit;
+
+        const where: any = {};
+        if (status) {
+            where.status = status;
+        }
+        if (categoryId) {
+            where.category = { id: categoryId };
+        }
+        if (search) {
+            where.title = ILike(`%${search}%`);
+        }
+
+        const [data, total] = await this.postsRepository.findAndCount({
+            where,
             relations: { author: true, category: true },
+            skip,
+            take,
         });
+
+        return {
+            data,
+            total,
+            page: currentPage,
+            limit: currentLimit,
+        };
     }
 
     async findOne(id: string): Promise<Post> {

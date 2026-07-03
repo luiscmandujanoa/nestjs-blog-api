@@ -110,3 +110,15 @@ GET http://localhost:3000/posts/352132b2-4ec9-4214-a35d-b66a8229812d/comments
 
 DELETE http://localhost:3000/posts/352132b2-4ec9-4214-a35d-b66a8229812d/comments/6ac90167-9017-41bf-abb3-53d233888cc3
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZTZiYjZlYi1mMTgzLTRiMGUtYTYxZC00NjYwYjc2NWUzN2UiLCJlbWFpbCI6ImFkbWluQGJsb2cuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgzMDY2NDIwLCJleHAiOjE3ODMwNzAwMjB9.fRRB6eGRjLyc2RereyI3UAtO2iNtvr_zI2Uz2s8pwss
+
+### Listar posts paginados
+
+GET http://localhost:3000/posts?page=1&limit=10
+
+### Listar posts por status
+
+GET http://localhost:3000/posts?status=draft
+
+### Buscar posts por título
+
+GET http://localhost:3000/posts?search=primer
