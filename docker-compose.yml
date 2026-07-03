@@ -15,5 +15,14 @@ services:
         ports:
             - '6379:6379'
 
+    postgres-test:
+        image: postgres:15
+        environment:
+            POSTGRES_DB: blog_db_test
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - '5433:5432'
+
 volumes:
     pgdata:

@@ -1,29 +1,76 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
+import { TestDatabaseModule } from './setup-e2e';
+import { DataSource } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('Auth (e2e)', () => {
+    let app: INestApplication;
+    let dataSource: DataSource;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    beforeAll(async () => {
+        const moduleFixture: TestingModule = await Test.createTestingModule({
+            imports: [AppModule],
+        })
+            .overrideModule(TypeOrmModule)
+            .useModule(TestDatabaseModule)
+            .compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+        app = moduleFixture.createNestApplication();
+        app.useGlobalPipes(
+            new ValidationPipe({
+                whitelist: true,
+                forbidNonWhitelisted: true,
+                transform: true,
+            }),
+        );
+        await app.init();
+        dataSource = moduleFixture.get(DataSource);
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+        console.log('BD conectada:', dataSource.options.database);
+    });
 
-  afterEach(async () => {
-    await app.close();
-  });
+    beforeEach(async () => {
+        console.log('Limpiando BD...');
+        await dataSource.query('SET session_replication_role = replica;');
+        await dataSource.query(
+            'TRUNCATE TABLE comments, posts, categories, users RESTART IDENTITY CASCADE;',
+        );
+        await dataSource.query('SET session_replication_role = DEFAULT;');
+        console.log('BD limpia');
+
+        // usuario base para tests que lo necesiten
+        await request(app.getHttpServer())
+            .post('/auth/register')
+            .send({ email: 'base@test.com', password: '123456', name: 'Base' });
+    });
+
+    afterAll(async () => {
+        await app.close();
+    });
+
+    it('POST /auth/register - debería registrar un usuario', async () => {
+        const res = await request(app.getHttpServer())
+            .post('/auth/register')
+            .send({
+                email: 'nuevo@test.com',
+                password: '123456',
+                name: 'Nuevo',
+            }); // email diferente
+
+        console.log('Response:', res.status, res.body);
+        expect(res.status).toBe(201);
+    });
+
+    it('POST /auth/login - debería retornar un token', () => {
+        return request(app.getHttpServer())
+            .post('/auth/login')
+            .send({ email: 'base@test.com', password: '123456' }) // usa el usuario base
+            .expect(201)
+            .expect((res) => {
+                expect(res.body.access_token).toBeDefined();
+            });
+    });
 });

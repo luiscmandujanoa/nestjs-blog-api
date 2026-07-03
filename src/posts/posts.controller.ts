@@ -20,7 +20,7 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { QueryPostDto } from './dto/query-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ImagesService } from 'src/images/images.service';
+import { ImagesService } from '../images/images.service';
 import { memoryStorage } from 'multer';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
