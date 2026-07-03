@@ -7,6 +7,7 @@ import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         AuthModule,
         PostsModule,
         CategoriesModule,
+        CommentsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

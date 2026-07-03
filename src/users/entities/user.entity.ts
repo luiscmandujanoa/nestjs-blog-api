@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Post } from '../../posts/entities/post.entity';
 import { Exclude } from 'class-transformer';
+import { Comment } from '../../comments/entities/comment.entity';
 
 export enum UserRole {
     ADMIN = 'admin',
@@ -34,6 +35,9 @@ export class User {
 
     @Column({ default: true })
     isActive!: boolean;
+
+    @OneToMany(() => Comment, (comment) => comment.author)
+    comments!: Comment[];
 
     @CreateDateColumn()
     createdAt!: Date;
