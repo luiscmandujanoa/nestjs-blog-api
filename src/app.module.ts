@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentsModule } from './comments/comments.module';
 import { ImagesModule } from './images/images.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
     imports: [
@@ -35,6 +36,11 @@ import { CacheModule } from '@nestjs/cache-manager';
                 host: config.get('REDIS_HOST', 'localhost'),
                 port: config.get<number>('REDIS_PORT', 6379),
             }),
+        }),
+        PrometheusModule.register({
+            defaultMetrics: {
+                enabled: true,
+            },
         }),
         UsersModule,
         AuthModule,
