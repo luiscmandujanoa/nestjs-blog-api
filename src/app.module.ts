@@ -25,7 +25,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
                 password: config.get('DB_PASSWORD'),
                 database: config.get('DB_NAME'),
                 autoLoadEntities: true,
-                synchronize: true,
+                synchronize: process.env.NODE_ENV !== 'production',
             }),
         }),
         CacheModule.registerAsync({
