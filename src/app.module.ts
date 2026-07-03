@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentsModule } from './comments/comments.module';
 import { ImagesModule } from './images/images.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
     imports: [
@@ -24,6 +25,15 @@ import { ImagesModule } from './images/images.module';
                 database: config.get('DB_NAME'),
                 autoLoadEntities: true,
                 synchronize: true,
+            }),
+        }),
+        CacheModule.registerAsync({
+            isGlobal: true,
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                store: 'ioredis',
+                host: config.get('REDIS_HOST', 'localhost'),
+                port: config.get<number>('REDIS_PORT', 6379),
             }),
         }),
         UsersModule,
