@@ -8,6 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentsModule } from './comments/comments.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { CommentsModule } from './comments/comments.module';
         PostsModule,
         CategoriesModule,
         CommentsModule,
+        ImagesModule,
     ],
     controllers: [AppController],
     providers: [AppService],

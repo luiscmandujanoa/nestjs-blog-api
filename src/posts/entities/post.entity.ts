@@ -36,6 +36,9 @@ export class Post {
     @ManyToOne(() => User, (user) => user.posts)
     author!: User;
 
+    @Column({ nullable: true })
+    imageUrl?: string;
+
     @ManyToOne(() => Category, (category) => category.posts, { nullable: true })
     category!: Category;
 

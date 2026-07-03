@@ -85,6 +85,12 @@ export class PostsService {
         await this.postsRepository.remove(post);
     }
 
+    async updateImage(id: string, imageUrl: string): Promise<Post> {
+        const post = await this.findOne(id);
+        post.imageUrl = imageUrl;
+        return this.postsRepository.save(post);
+    }
+
     private generateSlug(title: string): string {
         return title
             .toLowerCase()

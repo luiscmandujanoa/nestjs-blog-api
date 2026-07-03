@@ -122,3 +122,11 @@ GET http://localhost:3000/posts?status=draft
 ### Buscar posts por título
 
 GET http://localhost:3000/posts?search=primer
+
+### Debería devolver vacío
+
+GET http://localhost:3000/posts?status=published
+
+### Debería devolver vacío
+
+GET http://localhost:3000/posts?search=angular
